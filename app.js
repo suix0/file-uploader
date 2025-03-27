@@ -1,10 +1,19 @@
 const express = require("express");
 const session = require("express-session");
+const passport = require("passport");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("./generated/prisma");
+const path = require("node:path");
 const app = express();
+const indexRouter = require("./routes/indexRouter");
 
 require("dotenv").config();
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 
 /* Middleware for Session Authentication */
 // Define session
@@ -20,11 +29,12 @@ app.use(
     }),
   })
 );
-app.use(passport(session));
+app.use(passport.session());
 
 require("./config/passport");
 
 /* Define the routers */
+app.use("/", indexRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
