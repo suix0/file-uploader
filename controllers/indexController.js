@@ -6,7 +6,19 @@ const asyncHandler = require("express-async-handler");
 const prisma = new PrismaClient();
 
 const validateRegistration = [
-  body("username").trim().notEmpty().withMessage("Username can't be empty."),
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Username can't be empty.")
+    .custom((value) => {
+      const isExist = prisma.user.findMany({
+        where: {
+          username: value,
+        },
+      });
+      return isExist.username === value;
+    })
+    .withMessage(`Username is already taken.`),
   body("password")
     .trim()
     .notEmpty()
