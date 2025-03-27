@@ -14,5 +14,5 @@ indexRouter.post(
 );
 
 indexRouter.get("/register", indexController.getRegisterPage);
-
+indexRouter.post("/register", indexController.postRegistration);
 module.exports = indexRouter;
