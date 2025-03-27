@@ -8,11 +8,12 @@ indexRouter.get("/", indexController.getIndexPage);
 indexRouter.post(
   "/login",
   passport.authenticate("local", {
-    sucessRedirect: "/",
-    failureRedirect: "/login",
+    successRedirect: "/home",
+    failureRedirect: "/",
   })
 );
 
 indexRouter.get("/register", indexController.getRegisterPage);
 indexRouter.post("/register", indexController.postRegistration);
+
 module.exports = indexRouter;

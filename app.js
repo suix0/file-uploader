@@ -6,6 +6,7 @@ const { PrismaClient } = require("./generated/prisma");
 const path = require("node:path");
 const app = express();
 const indexRouter = require("./routes/indexRouter");
+const homeRouter = require("./routes/homeRouter");
 
 require("dotenv").config();
 
@@ -35,9 +36,6 @@ require("./config/passport");
 
 /* Define the routers */
 app.use("/", indexRouter);
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/home", homeRouter);
 
 app.listen(5000);

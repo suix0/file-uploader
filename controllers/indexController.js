@@ -1,5 +1,9 @@
 const { body, validationResult } = require("express-validator");
+const { PrismaClient } = require("../generated/prisma");
+const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
+
+const prisma = new PrismaClient();
 
 const validateRegistration = [
   body("username").trim().notEmpty().withMessage("Username can't be empty."),
@@ -26,15 +30,28 @@ exports.getRegisterPage = (req, res) => {
 
 exports.postRegistration = [
   validateRegistration,
-  (req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
     if (!errors.isEmpty()) {
       res.render("index/register", {
         isIndex: true,
         error: errors.array(),
-        username: req.body.username,
       });
+      return;
+    }
+    try {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      await prisma.user.create({
+        data: {
+          username: req.body.username,
+          password: hashedPassword,
+        },
+      });
+      res.render("index/signIn", {
+        message: "Account created successfully.",
+      });
+    } catch (err) {
+      console.error(err);
     }
   },
 ];

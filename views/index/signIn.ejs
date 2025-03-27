@@ -8,8 +8,11 @@
 </head>
 <body>
   <%- include('../partials/header') %>
-  <main class="h-full flex justify-center items-center">
-    <form action="login" method="post" class="flex flex-col justify-center items-center w-fit gap-2 border p-4">
+  <main class="h-full flex justify-center items-center flex-col gap-4">
+     <% if (locals.message) { %>
+      <p class="border bg-green-400 p-4"><%= locals.message %></p>
+     <% } %>
+    <form action="/login" method="POST" class="flex flex-col justify-center items-center w-fit gap-2 border p-4">
       <div>
         <label for="username">
           <input type="text" name="username" id="username" placeholder="Username" required  class="p-2 border">
