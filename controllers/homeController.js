@@ -1,6 +1,6 @@
 const { PrismaClient } = require("../generated/prisma");
 const asyncHandler = require("express-async-handler");
 
-exports.getHome = (req, res) => {
-  res.send(`Hello, ${req.user.username}`);
+exports.getHomePage = (req, res) => {
+  res.render("home/homePage", { user: req.user.username });
 };

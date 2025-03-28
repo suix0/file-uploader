@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Home</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body class="bg-gray-200 ">
+  <%- include('../partials/header.ejs') %>
+  <main class="flex row-start-2 px-10">
+    <aside class="h-full w-[200px] flex flex-col gap-6">
+      <ul class="flex flex-col gap-1 translate-y-4">
+        <li><a id="fileUploadBtn" class="cursor-pointer">File Upload</a></li>
+        <li><a href="">New Folder</a></li>
+      </ul>
+      <ul class="flex flex-col gap-1 translate-y-4">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/home/folders">Folders</a></li>
+        <li><a href="/home/files">Files</a></li>
+      </ul>
+    </aside>
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center overflow-auto" >
+      <p class="text-2xl">Welcome to your file's home, <%= user %></p>
+    </div>
+  </main>
+
+  <%# File upload form dialog %>
+  <dialog id="fileUpload" class="m-auto rounded-lg">
+    <a id="cancelUpload"></a>
+    <form action="/home/file/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4 p-4">
+      <label for="fileName">
+        <input type="text" name="fileName" id="fileName" placeholder="Save file as..." class="border p-1 rounded-lg">
+      </label>
+      <input type="file" name="file" class="w-full border rounded-lg" placeholder="No file chosen" />
+      <button class="border rounded-lg p-1" type="submit">Upload</button>
+    </form>   
+  </dialog>
+
+  <script>
+    const fileUploadBtn = document.querySelector("#fileUploadBtn");
+    const dialog = document.querySelector("#fileUpload")
+    fileUploadBtn.addEventListener("click", () => {
+      dialog.showModal();
+    })
+  </script>
+</body>
+</html>

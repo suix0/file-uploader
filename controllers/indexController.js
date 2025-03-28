@@ -10,12 +10,14 @@ const validateRegistration = [
     .trim()
     .notEmpty()
     .withMessage("Username can't be empty.")
-    .custom((value) => {
-      const isExist = prisma.user.findMany({
+    .custom(async (value) => {
+      const isExist = await prisma.user.findMany({
         where: {
           username: value,
         },
       });
+      console.log(isExist);
+      console.log(value);
       return isExist.username === value;
     })
     .withMessage(`Username is already taken.`),
