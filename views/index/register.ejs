@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body>
+  <%- include('../partials/header.ejs') %>
+  <main class="h-full flex justify-center items-center flex-col gap-2">
+    <form action="/register" method="POST" class="flex flex-col justify-center items-center w-fit gap-2 border p-4">
+      <label for="username">
+        <input type="text" name="username" id="username" placeholder="Username" required class="p-2 border">
+      </label>
+
+      <label for="password">
+        <input type="password" name="password" id="password" placeholder="Password" required class="p-2 border">
+      </label>
+
+      <label for="confirmPassword">
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password"  required class="p-2 border">
+      </label>
+      <button type="submit">
+        Create account
+      </button>
+      <hr class="w-full">
+      <p>Already have an account? <span><a href="/">Log in</a></span></p>
+    </form>
+    <%- include('../errors/error') %>
+  </main>
+</body>
+</html>
