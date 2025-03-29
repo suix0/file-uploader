@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 const homeRouter = Router();
 
 homeRouter.get("/", homeController.getHomePage);
+homeRouter.get("/folder/:folderId", homeController.getFolder);
 
 homeRouter.post("/file/upload", upload.single("file"), (req, res) => {
   res.redirect("/home");

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+  <main class="row-start-2 h-full flex flex-col justify-center items-center -translate-y-30">
+    <p>Folder Information</p>
+    <table>
+      <tr>
+        <th>Owner</th>
+        <th>Folder Name</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+        <th>Files</th>
+        <th>Actions</th>
+      </tr>
+      <tr>
+        <td><%= folder[0].user.username %></td>
+        <td><%= folder[0].folderName %></td>
+        <td><%= folder[0].dateCreated %></td>
+        <td><%= folder[0].updatedAt %></td>
+        <td><%= folder[0].File.length %></td>
+        <td>
+          <div class="flex">
+            <a href="/home/folder/rename/:<%= folder[0].id %>">
+              <img src="/svg/pencil.svg" alt="Rename folder" class="w-[24px]">
+            </a>
+            <a href="/home/folder/delete/:<%= folder[0].id %>">
+              <img src="/svg/trash.svg" alt="Delete folder" class="w-[24px]">
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </main>
+</body>
+</html>

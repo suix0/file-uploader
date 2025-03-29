@@ -11,9 +11,36 @@ const folderValidate = [
     .withMessage("Folder name can't be empty."),
 ];
 
-exports.getHomePage = (req, res) => {
-  res.render("home/homePage", { user: req.user.username });
+exports.getHomePage = async (req, res) => {
+  const folders = await prisma.folder.findMany();
+  res.render("home/homePage", {
+    user: req.user.username,
+    folders: folders.length > 0 ? folders : "",
+  });
 };
+
+exports.getFolder = asyncHandler(async (req, res) => {
+  const folderId = Number(req.params.folderId);
+  const folder = await prisma.folder.findMany({
+    where: {
+      id: folderId,
+    },
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      File: true,
+    },
+  });
+
+  if (!folder) {
+    throw new Error("Folder not found");
+  }
+
+  res.render("home/folderInformation", { folder: folder });
+});
 
 exports.postFolder = [
   folderValidate,

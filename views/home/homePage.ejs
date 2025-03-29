@@ -6,7 +6,7 @@
   <title>File Home</title>
   <link rel="stylesheet" href="/styles/output.css">
 </head>
-<body class="bg-gray-200 ">
+<body class="bg-gray-200 relative">
   <%- include('../partials/header.ejs') %>
   <main class="flex row-start-2 px-10">
     <aside class="h-full w-[200px] flex flex-col gap-6">
@@ -22,8 +22,21 @@
     </aside>
     <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center overflow-auto" >
       <p class="text-2xl">Welcome to your file's home, <%= user %></p>
-      <div>
-        
+      <div class="flex flex-col mt-10 w-full gap-4 overflow-x-auto">
+        <% if (locals.folders) { %>
+          <p class="text-2xl">Folders</p>
+          <div class="flex gap-4">
+            <% folders.forEach(folder => { %>
+              <div class="border rounded-lg p-2 w-[200px] flex justify-between hover:bg-gray-200">
+                <p>
+                  <%= folder.folderName %>
+                </p>
+                <a href="/home/folder/<%= folder.id %>" class="cursor-pointer" title="Folder information and actions">
+                  <img src="/svg/actions.svg" alt="Folder options" class="w-[24px] hover:bg-neutral-100 rounded-full">
+                </a>
+              </div>
+            <% }) %>
+        <% } %>
       </div>
     </div>
   </main>
