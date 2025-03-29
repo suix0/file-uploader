@@ -12,7 +12,7 @@
     <aside class="h-full w-[200px] flex flex-col gap-6">
       <ul class="flex flex-col gap-1 translate-y-4">
         <li><a id="fileUploadBtn" class="cursor-pointer">File Upload</a></li>
-        <li><a href="">New Folder</a></li>
+        <li><a id="folderCreateBtn" class="cursor-pointer">New Folder</a></li>
       </ul>
       <ul class="flex flex-col gap-1 translate-y-4">
         <li><a href="/home">Home</a></li>
@@ -22,6 +22,9 @@
     </aside>
     <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center overflow-auto" >
       <p class="text-2xl">Welcome to your file's home, <%= user %></p>
+      <div>
+        
+      </div>
     </div>
   </main>
 
@@ -37,12 +40,40 @@
     </form>   
   </dialog>
 
+  <%# Folder create form dialog %>
+  <dialog id="folderCreate" class="m-auto rounded-lg">
+    <a id="cancelUpload"/>
+    <form action="/home/folder/upload" method="post" class="flex flex-col gap-4 p-4">
+      <label for="folderName">
+        <input type="text" name="folderName" id="folderName" placeholder="Folder name..." class="border p-1 rounded-lg" required>
+      </label>
+      <button class="border rounded-lg p-1" type="submit">Create</button>
+      <div class="flex justify-center">
+        <%- include('../errors/error') %>
+      </div>
+    </form>   
+  </dialog>
+
+
   <script>
     const fileUploadBtn = document.querySelector("#fileUploadBtn");
-    const dialog = document.querySelector("#fileUpload")
+    const fileDialog = document.querySelector("#fileUpload")
     fileUploadBtn.addEventListener("click", () => {
-      dialog.showModal();
+      fileDialog.showModal();
     })
+
+    const folderCreateBtn = document.querySelector("#folderCreateBtn");
+    const folderDialog = document.querySelector("#folderCreate")
+    folderCreateBtn.addEventListener("click", () => {
+      folderDialog.showModal();
+    })
+
+    const openFolderForm = "<%= locals.openFolderForm %>"
+    console.log(openFolderForm)
+    if (openFolderForm) {
+      folderDialog.showModal();
+    }
+  </script>
   </script>
 </body>
 </html>
