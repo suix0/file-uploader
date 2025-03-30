@@ -1,11 +1,19 @@
 const { PrismaClient } = require("../generated/prisma");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+const formatDate = require("../utils/formatDates");
 
 const prisma = new PrismaClient();
 
 const folderValidate = [
   body("folderName")
+    .trim()
+    .notEmpty()
+    .withMessage("Folder name can't be empty."),
+];
+
+const folderRenameValidate = [
+  body("updatedFolderName")
     .trim()
     .notEmpty()
     .withMessage("Folder name can't be empty."),
@@ -21,7 +29,7 @@ exports.getHomePage = async (req, res) => {
 
 exports.getFolder = asyncHandler(async (req, res) => {
   const folderId = Number(req.params.folderId);
-  const folder = await prisma.folder.findMany({
+  let folder = await prisma.folder.findMany({
     where: {
       id: folderId,
     },
@@ -34,6 +42,8 @@ exports.getFolder = asyncHandler(async (req, res) => {
       File: true,
     },
   });
+
+  folder = formatDate(folder);
 
   if (!folder) {
     throw new Error("Folder not found");
@@ -58,6 +68,47 @@ exports.postFolder = [
       data: {
         folderName: req.body.folderName,
         userId: req.user.id,
+      },
+    });
+
+    res.redirect("/home");
+  },
+];
+
+exports.postFolderRename = [
+  folderRenameValidate,
+  async (req, res) => {
+    const folderId = Number(req.params.folderId);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let folder = await prisma.folder.findMany({
+        where: {
+          id: folderId,
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          File: true,
+        },
+      });
+      folder = formatDate(folder);
+      res.render("home/folderInformation", {
+        folder: folder,
+        error: errors.array(),
+        openFolderForm: true,
+      });
+      return;
+    }
+    console.log(req.body.updatedFolderName);
+    await prisma.folder.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        folderName: req.body.updatedFolderName,
       },
     });
     res.redirect("/home");

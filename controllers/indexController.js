@@ -35,7 +35,12 @@ const validateRegistration = [
 ];
 
 exports.getIndexPage = (req, res) => {
-  res.render("index/signIn", { isIndex: true });
+  if (req.user) {
+    res.redirect("/home");
+    return;
+  } else {
+    res.render("index/signIn", { isIndex: true });
+  }
 };
 
 exports.getRegisterPage = (req, res) => {

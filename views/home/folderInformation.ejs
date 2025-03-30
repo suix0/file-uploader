@@ -8,35 +8,92 @@
 </head>
 <body>
   <%- include('../partials/header') %>
-  <main class="row-start-2 h-full flex flex-col justify-center items-center -translate-y-30">
+  <main class="row-start-2 h-full flex flex-col justify-center items-center -translate-y-30 gap-4">
     <p>Folder Information</p>
-    <table>
-      <tr>
-        <th>Owner</th>
-        <th>Folder Name</th>
-        <th>Created At</th>
-        <th>Updated At</th>
-        <th>Files</th>
-        <th>Actions</th>
+    <table class="mb-14 border">
+      <tr class="border-b">
+        <th class="border p-2 text-center">Owner</th>
+        <th class="border p-2 text-center">Folder Name</th>
+        <th class="border p-2 text-center">Created At</th>
+        <th class="border p-2 text-center">Updated At</th>
+        <th class="border p-2 text-center">Files</th>
+        <th class="border p-2 text-center">Actions</th>
       </tr>
       <tr>
-        <td><%= folder[0].user.username %></td>
-        <td><%= folder[0].folderName %></td>
-        <td><%= folder[0].dateCreated %></td>
-        <td><%= folder[0].updatedAt %></td>
-        <td><%= folder[0].File.length %></td>
+        <td class="border p-2 text-center"><%= folder[0].user.username %></td>
+        <td class="border p-2 text-center"><%= folder[0].folderName %></td>
+        <td class="border p-2 text-center"><%= folder[0].dateCreated %></td>
+        <td class="border p-2 text-center"><%= folder[0].updatedAt %></td>
+        <td class="border p-2 text-center"><%= folder[0].File.length %></td>
         <td>
-          <div class="flex">
-            <a href="/home/folder/rename/:<%= folder[0].id %>">
+          <div class="flex justify-center gap-2">
+            <a id="folderRename" class="select-none cursor-pointer">
               <img src="/svg/pencil.svg" alt="Rename folder" class="w-[24px]">
             </a>
-            <a href="/home/folder/delete/:<%= folder[0].id %>">
+            <a id="folderDelete" class="select-none cursor-pointer">
               <img src="/svg/trash.svg" alt="Delete folder" class="w-[24px]">
             </a>
           </div>
         </td>
       </tr>
     </table>
+    <a href="/home">Return</a>
   </main>
+  <dialog id="updateDialog" class="m-auto border rounded-lg relative">
+    <form action="/home/folder/rename/<%= folder[0].id %>" method="post" class="flex flex-col items-center gap-4 p-4 rounded-lg">
+      <a class="cursor-pointer absolute right-0  top-0" id="cancelUpdate">
+        <img src="/svg/close.svg" alt="Cancel folder rename" class="w-[20px]">
+      </a>
+      <label for="updatedFolderName">
+        <input type="text" name="updatedFolderName" id="updatedFolderName" placeholder="New folder name here..." class="border p-2 rounded-lg" required>
+      </label>
+      <button type="submit" class="p-2 border rounded-lg w-[40%]">Update</button>
+    </form>
+    <div class="flex justify-center">
+      <%- include('../errors/error') %>
+    </div>
+  </dialog>
+
+  <dialog id="deleteDialog" class="m-auto border rounded-lg p-4">
+    <p class="mb-4">Confirm folder deletion?</p>
+    <form action="/home/folder/rename/<%= folder[0].id %>" method="post" class="flex flex-col rounded-lg">
+      <div class="flex gap-2">
+        <button class="p-2 border rounded-lg flex-auto" id="cancelDelete">Cancel</button>
+        <button class="p-2 border rounded-lg flex-auto" type="submit">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    const updateDialog = document.querySelector("#updateDialog");
+    const deleteDialog = document.querySelector("#deleteDialog");
+    const renameBtn = document.querySelector("#folderRename");
+    const deleteBtn = document.querySelector("#folderDelete");
+
+    renameBtn.addEventListener("click", () => {
+      updateDialog.showModal();
+    })
+
+    deleteBtn.addEventListener("click", () => {
+      deleteDialog.showModal();
+    })
+
+    const cancelDelete = document.querySelector("#cancelDelete");
+    cancelDelete.addEventListener("click", (e) => {
+      e.preventDefault();
+      deleteDialog.close();
+    })
+
+    const cancelUpdate = document.querySelector("#cancelUpdate");
+    cancelUpdate.addEventListener("click", (e) => {
+      e.preventDefault();
+      updateDialog.close();
+    })
+
+    const openUpdateFolder = "<%= locals.openFolderForm %>"
+    if (openUpdateFolder) {
+      updateDialog.showModal();
+    }
+  </script>
 </body>
 </html>
