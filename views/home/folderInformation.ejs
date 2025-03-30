@@ -56,7 +56,7 @@
 
   <dialog id="deleteDialog" class="m-auto border rounded-lg p-4">
     <p class="mb-4">Confirm folder deletion?</p>
-    <form action="/home/folder/rename/<%= folder[0].id %>" method="post" class="flex flex-col rounded-lg">
+    <form action="/home/folder/delete/<%= folder[0].id %>" method="post" class="flex flex-col rounded-lg">
       <div class="flex gap-2">
         <button class="p-2 border rounded-lg flex-auto" id="cancelDelete">Cancel</button>
         <button class="p-2 border rounded-lg flex-auto" type="submit">Delete</button>

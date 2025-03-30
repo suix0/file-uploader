@@ -20,12 +20,12 @@
         <li><a href="/home/files">Files</a></li>
       </ul>
     </aside>
-    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center overflow-auto" >
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center" >
       <p class="text-2xl">Welcome to your file's home, <%= user %></p>
-      <div class="flex flex-col mt-10 w-full gap-4 overflow-x-auto">
+      <div class="flex flex-col mt-10 gap-4 w-full">
         <% if (locals.folders) { %>
           <p class="text-2xl">Folders</p>
-          <div class="flex gap-4">
+          <div class="flex gap-4 whitespace-nowrap flex-wrap">
             <% folders.forEach(folder => { %>
               <div class="border rounded-lg p-2 w-[200px] flex justify-between hover:bg-gray-200">
                 <p>

@@ -203,6 +203,12 @@
   .flex {
     display: flex;
   }
+  .inline-flex {
+    display: inline-flex;
+  }
+  .table {
+    display: table;
+  }
   .h-\[99\%\] {
     height: 99%;
   }
@@ -218,8 +224,23 @@
   .w-\[40\%\] {
     width: 40%;
   }
+  .w-\[90\%\] {
+    width: 90%;
+  }
+  .w-\[99\%\] {
+    width: 99%;
+  }
   .w-\[200px\] {
     width: 200px;
+  }
+  .w-\[1000px\] {
+    width: 1000px;
+  }
+  .w-\[1610px\] {
+    width: 1610px;
+  }
+  .w-\[full\] {
+    width: full;
   }
   .w-fit {
     width: fit-content;
@@ -229,6 +250,15 @@
   }
   .flex-auto {
     flex: auto;
+  }
+  .flex-initial {
+    flex: 0 auto;
+  }
+  .flex-none {
+    flex: none;
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   .-translate-y-30 {
     --tw-translate-y: calc(var(--spacing) * -30);
@@ -241,8 +271,17 @@
   .cursor-pointer {
     cursor: pointer;
   }
+  .resize {
+    resize: both;
+  }
   .flex-col {
     flex-direction: column;
+  }
+  .flex-nowrap {
+    flex-wrap: nowrap;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
   }
   .items-center {
     align-items: center;
@@ -265,11 +304,11 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  .overflow-auto {
-    overflow: auto;
+  .overflow-scroll {
+    overflow: scroll;
   }
-  .overflow-x-auto {
-    overflow-x: auto;
+  .overflow-x-scroll {
+    overflow-x: scroll;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -323,8 +362,18 @@
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
   .text-red-500 {
     color: var(--color-red-500);
+  }
+  .underline {
+    text-decoration-line: underline;
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
   }
   .select-none {
     -webkit-user-select: none;
@@ -370,6 +419,11 @@ body {
   initial-value: 0;
 }
 @property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-outline-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;

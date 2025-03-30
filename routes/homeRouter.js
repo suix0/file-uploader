@@ -27,5 +27,6 @@ homeRouter.post("/file/upload", upload.single("file"), (req, res) => {
 });
 homeRouter.post("/folder/upload", homeController.postFolder);
 homeRouter.post("/folder/rename/:folderId", homeController.postFolderRename);
+homeRouter.post("/folder/delete/:folderId", homeController.postFolderDelete);
 
 module.exports = homeRouter;

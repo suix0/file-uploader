@@ -102,8 +102,7 @@ exports.postFolderRename = [
       });
       return;
     }
-    console.log(req.body.updatedFolderName);
-    await prisma.folder.update({
+    const updatedFolder = await prisma.folder.update({
       where: {
         id: folderId,
       },
@@ -111,6 +110,26 @@ exports.postFolderRename = [
         folderName: req.body.updatedFolderName,
       },
     });
+
+    if (!updatedFolder) {
+      throw new Error("Folder does not exist!");
+    }
+
     res.redirect("/home");
   },
 ];
+
+exports.postFolderDelete = asyncHandler(async (req, res) => {
+  const folderId = Number(req.params.folderId);
+  const deletedFolder = await prisma.folder.delete({
+    where: {
+      id: folderId,
+    },
+  });
+
+  if (!deletedFolder) {
+    throw new Error("Folder does not exist!");
+  }
+
+  res.redirect("/home");
+});
