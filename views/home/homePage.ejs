@@ -9,35 +9,25 @@
 <body class="bg-gray-200 relative">
   <%- include('../partials/header.ejs') %>
   <main class="flex row-start-2 px-10">
-    <aside class="h-full w-[200px] flex flex-col gap-6">
-      <ul class="flex flex-col gap-1 translate-y-4">
-        <li><a id="fileUploadBtn" class="cursor-pointer">File Upload</a></li>
-        <li><a id="folderCreateBtn" class="cursor-pointer">New Folder</a></li>
-      </ul>
-      <ul class="flex flex-col gap-1 translate-y-4">
-        <li><a href="/home">Home</a></li>
-        <li><a href="/home/folders">Folders</a></li>
-        <li><a href="/home/files">Files</a></li>
-      </ul>
-    </aside>
+    <%- include('../partials/aside') %>
     <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col items-center" >
-      <p class="text-2xl">Welcome to your file's home, <%= user %></p>
-      <div class="flex flex-col mt-10 gap-4 w-full">
-        <% if (locals.folders) { %>
-          <p class="text-2xl">Folders</p>
-          <div class="flex gap-4 whitespace-nowrap flex-wrap">
-            <% folders.forEach(folder => { %>
-              <div class="border rounded-lg p-2 w-[200px] flex justify-between hover:bg-gray-200">
-                <p>
-                  <%= folder.folderName %>
-                </p>
-                <a href="/home/folder/<%= folder.id %>" class="cursor-pointer" title="Folder information and actions">
-                  <img src="/svg/actions.svg" alt="Folder options" class="w-[24px] hover:bg-neutral-100 rounded-full">
-                </a>
-              </div>
-            <% }) %>
-        <% } %>
-      </div>
+      <% if (locals.home) { %>  
+        <p class="text-2xl">Welcome to your file's home, <%= user %></p>
+        <div class="flex flex-col mt-10 gap-4 w-full">
+          <% if (locals.folders) { %>
+            <p class="text-lg">Folders</p>
+           <%- include('../partials/folders') %>
+          <% } %>
+      <% } else if (locals.foldersOnly) {%>
+        <p class="text-2xl">All your folders in one place.</p>
+        <div class="flex flex-col mt-10 gap-4 w-full">
+          <% if (locals.folders) { %>
+            <p class="text-lg">Folders</p>
+            <div class="flex gap-4 whitespace-nowrap flex-wrap">
+             <%- include('../partials/folders') %>
+          <% } %>
+        </div>
+      <% } %>
     </div>
   </main>
 
@@ -85,7 +75,6 @@
     if (openFolderForm) {
       folderDialog.showModal();
     }
-  </script>
   </script>
 </body>
 </html>

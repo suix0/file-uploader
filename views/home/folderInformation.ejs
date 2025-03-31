@@ -6,13 +6,15 @@
   <title>Folder</title>
   <link rel="stylesheet" href="/styles/output.css">
 </head>
-<body>
-  <%- include('../partials/header') %>
-  <main class="row-start-2 h-full flex flex-col justify-center items-center -translate-y-30 gap-4">
-    <p>Folder Information</p>
-    <table class="mb-14 border">
-      <tr class="border-b">
-        <th class="border p-2 text-center">Owner</th>
+<body class="bg-gray-200 relative">
+  <%- include('../partials/header.ejs') %>
+  <main class="flex row-start-2 px-10">
+    <%- include('../partials/aside') %>
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col" >
+      <p>Folder information</p>
+      <table class="mb-14 border">
+        <tr class="border-b">
+          <th class="border p-2 text-center">Owner</th>
         <th class="border p-2 text-center">Folder Name</th>
         <th class="border p-2 text-center">Created At</th>
         <th class="border p-2 text-center">Updated At</th>
@@ -37,8 +39,12 @@
         </td>
       </tr>
     </table>
-    <a href="/home">Return</a>
+    <p>Files</p>
+    
+  </div>
   </main>
+
+
   <dialog id="updateDialog" class="m-auto border rounded-lg relative">
     <form action="/home/folder/rename/<%= folder[0].id %>" method="post" class="flex flex-col items-center gap-4 p-4 rounded-lg">
       <a class="cursor-pointer absolute right-0  top-0" id="cancelUpdate">
@@ -62,6 +68,32 @@
         <button class="p-2 border rounded-lg flex-auto" type="submit">Delete</button>
       </div>
     </form>
+  </dialog>
+
+   <%# File upload form dialog %>
+   <dialog id="fileUpload" class="m-auto rounded-lg">
+    <a id="cancelUpload"></a>
+    <form action="/home/file/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4 p-4">
+      <label for="fileName">
+        <input type="text" name="fileName" id="fileName" placeholder="Save file as..." class="border p-1 rounded-lg">
+      </label>
+      <input type="file" name="file" class="w-full border rounded-lg" placeholder="No file chosen" />
+      <button class="border rounded-lg p-1" type="submit">Upload</button>
+    </form>   
+  </dialog>
+
+  <%# Folder create form dialog %>
+  <dialog id="folderCreate" class="m-auto rounded-lg">
+    <a id="cancelUpload"/>
+    <form action="/home/folder/upload" method="post" class="flex flex-col gap-4 p-4">
+      <label for="folderName">
+        <input type="text" name="folderName" id="folderName" placeholder="Folder name..." class="border p-1 rounded-lg" required>
+      </label>
+      <button class="border rounded-lg p-1" type="submit">Create</button>
+      <div class="flex justify-center">
+        <%- include('../errors/error') %>
+      </div>
+    </form>   
   </dialog>
 
   <script>
@@ -93,6 +125,23 @@
     const openUpdateFolder = "<%= locals.openFolderForm %>"
     if (openUpdateFolder) {
       updateDialog.showModal();
+    }
+
+    const fileUploadBtn = document.querySelector("#fileUploadBtn");
+    const fileDialog = document.querySelector("#fileUpload")
+    fileUploadBtn.addEventListener("click", () => {
+      fileDialog.showModal();
+    })
+
+    const folderCreateBtn = document.querySelector("#folderCreateBtn");
+    const folderDialog = document.querySelector("#folderCreate")
+    folderCreateBtn.addEventListener("click", () => {
+      folderDialog.showModal();
+    })
+
+    const openFolderForm = "<%= locals.openFolderForm %>"
+    if (openFolderForm) {
+      folderDialog.showModal();
     }
   </script>
 </body>

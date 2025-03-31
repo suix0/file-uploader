@@ -1,0 +1,8 @@
+<div class="flex gap-4 whitespace-nowrap flex-wrap">
+  <% folders.forEach(folder => { %>
+    <a href="/home/folder/<%= folder.id %>" class="border rounded-lg p-2 w-[200px] flex gap-2 hover:bg-gray-200">
+      <img src="/svg/folder.svg" alt="Folder icon" class="w-[24px]">
+      <span><%= folder.folderName %></span>
+    </a>
+  <% }) %>
+</div>

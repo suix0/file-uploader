@@ -21,6 +21,7 @@ const homeRouter = Router();
 
 homeRouter.get("/", isAuth, homeController.getHomePage);
 homeRouter.get("/folder/:folderId", homeController.getFolder);
+homeRouter.get("/folders", homeController.getFolders);
 
 homeRouter.post("/file/upload", upload.single("file"), (req, res) => {
   res.redirect("/home");

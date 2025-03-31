@@ -24,6 +24,7 @@ exports.getHomePage = async (req, res) => {
   res.render("home/homePage", {
     user: req.user.username,
     folders: folders.length > 0 ? folders : "",
+    home: true,
   });
 };
 
@@ -50,6 +51,14 @@ exports.getFolder = asyncHandler(async (req, res) => {
   }
 
   res.render("home/folderInformation", { folder: folder });
+});
+
+exports.getFolders = asyncHandler(async (req, res) => {
+  const folders = await prisma.folder.findMany();
+  res.render("home/homePage", {
+    folders: folders.length > 0 ? folders : "",
+    foldersOnly: true,
+  });
 });
 
 exports.postFolder = [

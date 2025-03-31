@@ -14,6 +14,8 @@
     --spacing: 0.25rem;
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
+    --text-lg: 1.125rem;
+    --text-lg--line-height: calc(1.75 / 1.125);
     --text-2xl: 1.5rem;
     --text-2xl--line-height: calc(2 / 1.5);
     --radius-lg: 0.5rem;
@@ -203,9 +205,6 @@
   .flex {
     display: flex;
   }
-  .inline-flex {
-    display: inline-flex;
-  }
   .table {
     display: table;
   }
@@ -218,29 +217,17 @@
   .w-\[20px\] {
     width: 20px;
   }
+  .w-\[24dpx\] {
+    width: 24dpx;
+  }
   .w-\[24px\] {
     width: 24px;
   }
   .w-\[40\%\] {
     width: 40%;
   }
-  .w-\[90\%\] {
-    width: 90%;
-  }
-  .w-\[99\%\] {
-    width: 99%;
-  }
   .w-\[200px\] {
     width: 200px;
-  }
-  .w-\[1000px\] {
-    width: 1000px;
-  }
-  .w-\[1610px\] {
-    width: 1610px;
-  }
-  .w-\[full\] {
-    width: full;
   }
   .w-fit {
     width: fit-content;
@@ -250,12 +237,6 @@
   }
   .flex-auto {
     flex: auto;
-  }
-  .flex-initial {
-    flex: 0 auto;
-  }
-  .flex-none {
-    flex: none;
   }
   .border-collapse {
     border-collapse: collapse;
@@ -276,9 +257,6 @@
   }
   .flex-col {
     flex-direction: column;
-  }
-  .flex-nowrap {
-    flex-wrap: nowrap;
   }
   .flex-wrap {
     flex-wrap: wrap;
@@ -303,12 +281,6 @@
   }
   .gap-6 {
     gap: calc(var(--spacing) * 6);
-  }
-  .overflow-scroll {
-    overflow: scroll;
-  }
-  .overflow-x-scroll {
-    overflow-x: scroll;
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
@@ -357,6 +329,10 @@
   .text-2xl {
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
+  .text-lg {
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
   }
   .text-xs {
     font-size: var(--text-xs);
