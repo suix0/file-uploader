@@ -38,4 +38,4 @@ require("./config/passport");
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
 
-app.listen(5000);
+app.listen(3000);

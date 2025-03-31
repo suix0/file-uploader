@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body class="bg-gray-200 relative">
+  <%- include('../partials/header.ejs') %>
+  <main class="flex row-start-2 px-10">
+    <%- include('../partials/aside') %>
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col" >
+      <p>Folder information</p>
+      <table class="mb-14 border">
+        <tr class="border-b">
+          <th class="border p-2 text-center">Owner</th>
+        <th class="border p-2 text-center">Folder Name</th>
+        <th class="border p-2 text-center">Created At</th>
+        <th class="border p-2 text-center">Updated At</th>
+        <th class="border p-2 text-center">Files</th>
+        <th class="border p-2 text-center">Actions</th>
+      </tr>
+      <tr>
+        <td class="border p-2 text-center"><%= folder[0].user.username %></td>
+        <td class="border p-2 text-center"><%= folder[0].folderName %></td>
+        <td class="border p-2 text-center"><%= folder[0].dateCreated %></td>
+        <td class="border p-2 text-center"><%= folder[0].updatedAt %></td>
+        <td class="border p-2 text-center"><%= folder[0].File.length %></td>
+        <td>
+          <div class="flex justify-center gap-2">
+            <a id="folderRename" class="select-none cursor-pointer">
+              <img src="/svg/pencil.svg" alt="Rename folder" class="w-[24px]">
+            </a>
+            <a id="folderDelete" class="select-none cursor-pointer">
+              <img src="/svg/trash.svg" alt="Delete folder" class="w-[24px]">
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p>Files</p>
+    
+  </div>
+  </main>
+
+
+  <dialog id="updateDialog" class="m-auto border rounded-lg relative">
+    <form action="/home/folder/rename/<%= folder[0].id %>" method="post" class="flex flex-col items-center gap-4 p-4 rounded-lg">
+      <a class="cursor-pointer absolute right-0  top-0" id="cancelUpdate">
+        <img src="/svg/close.svg" alt="Cancel folder rename" class="w-[20px]">
+      </a>
+      <label for="updatedFolderName">
+        <input type="text" name="updatedFolderName" id="updatedFolderName" placeholder="New folder name here..." class="border p-2 rounded-lg" required>
+      </label>
+      <button type="submit" class="p-2 border rounded-lg w-[40%]">Update</button>
+    </form>
+    <div class="flex justify-center">
+      <%- include('../errors/error') %>
+    </div>
+  </dialog>
+
+  <dialog id="deleteDialog" class="m-auto border rounded-lg p-4">
+    <p class="mb-4">Confirm folder deletion?</p>
+    <form action="/home/folder/delete/<%= folder[0].id %>" method="post" class="flex flex-col rounded-lg">
+      <div class="flex gap-2">
+        <button class="p-2 border rounded-lg flex-auto" id="cancelDelete">Cancel</button>
+        <button class="p-2 border rounded-lg flex-auto" type="submit">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+   <%# File upload form dialog %>
+   <dialog id="fileUpload" class="m-auto rounded-lg">
+    <a id="cancelUpload"></a>
+    <form action="/home/file/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4 p-4">
+      <label for="fileName">
+        <input type="text" name="fileName" id="fileName" placeholder="Save file as..." class="border p-1 rounded-lg">
+      </label>
+      <input type="file" name="file" class="w-full border rounded-lg" placeholder="No file chosen" />
+      <button class="border rounded-lg p-1" type="submit">Upload</button>
+    </form>   
+  </dialog>
+
+  <%# Folder create form dialog %>
+  <dialog id="folderCreate" class="m-auto rounded-lg">
+    <a id="cancelUpload"/>
+    <form action="/home/folder/upload" method="post" class="flex flex-col gap-4 p-4">
+      <label for="folderName">
+        <input type="text" name="folderName" id="folderName" placeholder="Folder name..." class="border p-1 rounded-lg" required>
+      </label>
+      <button class="border rounded-lg p-1" type="submit">Create</button>
+      <div class="flex justify-center">
+        <%- include('../errors/error') %>
+      </div>
+    </form>   
+  </dialog>
+
+  <script>
+    const updateDialog = document.querySelector("#updateDialog");
+    const deleteDialog = document.querySelector("#deleteDialog");
+    const renameBtn = document.querySelector("#folderRename");
+    const deleteBtn = document.querySelector("#folderDelete");
+
+    renameBtn.addEventListener("click", () => {
+      updateDialog.showModal();
+    })
+
+    deleteBtn.addEventListener("click", () => {
+      deleteDialog.showModal();
+    })
+
+    const cancelDelete = document.querySelector("#cancelDelete");
+    cancelDelete.addEventListener("click", (e) => {
+      e.preventDefault();
+      deleteDialog.close();
+    })
+
+    const cancelUpdate = document.querySelector("#cancelUpdate");
+    cancelUpdate.addEventListener("click", (e) => {
+      e.preventDefault();
+      updateDialog.close();
+    })
+
+    const openUpdateFolder = "<%= locals.openFolderForm %>"
+    if (openUpdateFolder) {
+      updateDialog.showModal();
+    }
+
+    const fileUploadBtn = document.querySelector("#fileUploadBtn");
+    const fileDialog = document.querySelector("#fileUpload")
+    fileUploadBtn.addEventListener("click", () => {
+      fileDialog.showModal();
+    })
+
+    const folderCreateBtn = document.querySelector("#folderCreateBtn");
+    const folderDialog = document.querySelector("#folderCreate")
+    folderCreateBtn.addEventListener("click", () => {
+      folderDialog.showModal();
+    })
+
+    const openFolderForm = "<%= locals.openFolderForm %>"
+    if (openFolderForm) {
+      folderDialog.showModal();
+    }
+  </script>
+</body>
+</html>
