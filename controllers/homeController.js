@@ -84,7 +84,7 @@ exports.getFiles = asyncHandler(async (req, res) => {
       },
     },
   });
-  const folders = await prisma.file.findMany();
+  const folders = await prisma.folder.findMany();
   files = files.map((file) => formatDate(file));
   res.render("home/files", { files: files, folders: folders });
 });
@@ -107,8 +107,7 @@ exports.postFolder = [
         userId: req.user.id,
       },
     });
-
-    res.redirect("/home");
+    res.redirect(req.get("Referrer"));
   },
 ];
 
@@ -189,5 +188,5 @@ exports.postFile = asyncHandler(async (req, res) => {
   if (!file) {
     throw new Error("There seems to be an error uploading file.");
   }
-  res.redirect("/home");
+  res.redirect(req.get("Referrer"));
 });
