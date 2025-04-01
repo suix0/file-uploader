@@ -19,10 +19,9 @@
            <%- include('../partials/folders') %>
           <% } %>
       <% } else if (locals.foldersOnly) {%>
-        <p class="text-2xl">All your folders in one place.</p>
-        <div class="flex flex-col mt-10 gap-4 w-full">
+        <div class="flex flex-col gap-4 w-full">
           <% if (locals.folders) { %>
-            <p class="text-lg">Folders</p>
+            <p>Folders</p>
             <div class="flex gap-4 whitespace-nowrap flex-wrap">
              <%- include('../partials/folders') %>
           <% } %>

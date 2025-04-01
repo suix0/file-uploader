@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folder</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body class="bg-gray-200 relative">
+  <%- include('../partials/header.ejs') %>
+  <main class="flex row-start-2 px-10">
+    <%- include('../partials/aside') %>
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col gap-4" >
+    <p>All files</p>
+    <div class="flex flex-wrap gap-4">
+      <% if (locals.files) { %>
+        <% files.forEach(file => { %>
+          <div class="inline-flex flex-col border items-start rounded-lg w-[250px] p-2">
+            <div class="flex justify-between w-full">
+              <div class="flex gap-4 items-center">
+                <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
+                <p class="my-1"><%= file.fileName %></p>
+              </div>
+              <img src="/svg/dots.svg" alt="File information and actions" class="w-[24px] hover:bg-gray-200 rounded-full cursor-pointer">
+            </div>
+
+            <div class="w-full h-[200px] flex justify-center items-center bg-gray-300 rounded-lg">
+              <img src="/svg/file.svg" alt="File icon" class="w-[50px]">
+            </div>
+          </div>
+      <% }) %>
+    <% } %>
+    </div>
+  </div>
+  </main>
+
+   <%# File upload form dialog %>
+  <%- include('fileUpload') %>
+
+  <%# Folder create form dialog %>
+  <%- include('folderUpload') %>
+
+  <script>
+    const fileUploadBtn = document.querySelector("#fileUploadBtn");
+    const fileDialog = document.querySelector("#fileUpload")
+    fileUploadBtn.addEventListener("click", () => {
+      fileDialog.showModal();
+    })
+
+    const folderCreateBtn = document.querySelector("#folderCreateBtn");
+    const folderDialog = document.querySelector("#folderCreate")
+    folderCreateBtn.addEventListener("click", () => {
+      folderDialog.showModal();
+    })
+
+    const openFolderForm = "<%= locals.openFolderForm %>"
+    if (openFolderForm) {
+      folderDialog.showModal();
+    }
+  </script>
+</body>
+</html>

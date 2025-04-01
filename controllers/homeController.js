@@ -45,7 +45,7 @@ exports.getFolder = asyncHandler(async (req, res) => {
     },
   });
 
-  folder = formatDate(folder);
+  folder[0] = formatDate(folder[0]);
 
   const folders = await prisma.folder.findMany();
 
@@ -54,7 +54,6 @@ exports.getFolder = asyncHandler(async (req, res) => {
   }
 
   const files = folder[0].File.map((file) => file);
-
   res.render("home/folderInformation", {
     folder: folder,
     folders: folders,
@@ -68,6 +67,26 @@ exports.getFolders = asyncHandler(async (req, res) => {
     folders: folders.length > 0 ? folders : "",
     foldersOnly: true,
   });
+});
+
+exports.getFiles = asyncHandler(async (req, res) => {
+  let files = await prisma.file.findMany({
+    include: {
+      folder: {
+        select: {
+          folderName: true,
+        },
+      },
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+  const folders = await prisma.file.findMany();
+  files = files.map((file) => formatDate(file));
+  res.render("home/files", { files: files, folders: folders });
 });
 
 exports.postFolder = [
@@ -112,7 +131,8 @@ exports.postFolderRename = [
           File: true,
         },
       });
-      folder = formatDate(folder);
+
+      folder[0] = formatDate(folder[0]);
 
       const folders = await prisma.folder.findMany();
       res.render("home/folderInformation", {
@@ -157,7 +177,7 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
 
 exports.postFile = asyncHandler(async (req, res) => {
   const fileSize = byteSize(req.file.size);
-  const file = await prisma.file.create({
+  let file = await prisma.file.create({
     data: {
       filePath: req.file.path,
       fileName: req.file.filename,
@@ -169,6 +189,5 @@ exports.postFile = asyncHandler(async (req, res) => {
   if (!file) {
     throw new Error("There seems to be an error uploading file.");
   }
-  console.log(req.path);
   res.redirect("/home");
 });
