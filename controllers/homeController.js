@@ -2,6 +2,7 @@ const { PrismaClient } = require("../generated/prisma");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const formatDate = require("../utils/formatDates");
+const byteSize = require("byte-size");
 
 const prisma = new PrismaClient();
 
@@ -155,11 +156,13 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
 });
 
 exports.postFile = asyncHandler(async (req, res) => {
+  const fileSize = byteSize(req.file.size);
   const file = await prisma.file.create({
     data: {
       filePath: req.file.path,
       fileName: req.file.filename,
       folderId: Number(req.body.folder),
+      size: `${fileSize.value}${fileSize.unit}`,
       userId: req.user.id,
     },
   });
