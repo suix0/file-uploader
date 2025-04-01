@@ -46,11 +46,19 @@ exports.getFolder = asyncHandler(async (req, res) => {
 
   folder = formatDate(folder);
 
+  const folders = await prisma.folder.findMany();
+
   if (!folder) {
     throw new Error("Folder not found");
   }
 
-  res.render("home/folderInformation", { folder: folder });
+  const files = folder[0].File.map((file) => file);
+
+  res.render("home/folderInformation", {
+    folder: folder,
+    folders: folders,
+    files: files,
+  });
 });
 
 exports.getFolders = asyncHandler(async (req, res) => {
@@ -104,8 +112,11 @@ exports.postFolderRename = [
         },
       });
       folder = formatDate(folder);
+
+      const folders = await prisma.folder.findMany();
       res.render("home/folderInformation", {
         folder: folder,
+        folders: folders,
         error: errors.array(),
         openFolderForm: true,
       });
@@ -140,5 +151,21 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
     throw new Error("Folder does not exist!");
   }
 
+  res.redirect("/home");
+});
+
+exports.postFile = asyncHandler(async (req, res) => {
+  const file = await prisma.file.create({
+    data: {
+      filePath: req.file.path,
+      fileName: req.file.filename,
+      folderId: Number(req.body.folder),
+      userId: req.user.id,
+    },
+  });
+  if (!file) {
+    throw new Error("There seems to be an error uploading file.");
+  }
+  console.log(req.path);
   res.redirect("/home");
 });

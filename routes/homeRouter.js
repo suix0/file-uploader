@@ -8,7 +8,6 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    console.log(file);
     if (req.body.fileName) {
       cb(null, req.body.fileName);
     } else {
@@ -23,9 +22,7 @@ homeRouter.get("/", isAuth, homeController.getHomePage);
 homeRouter.get("/folder/:folderId", homeController.getFolder);
 homeRouter.get("/folders", homeController.getFolders);
 
-homeRouter.post("/file/upload", upload.single("file"), (req, res) => {
-  res.redirect("/home");
-});
+homeRouter.post("/file/upload", upload.single("file"), homeController.postFile);
 homeRouter.post("/folder/upload", homeController.postFolder);
 homeRouter.post("/folder/rename/:folderId", homeController.postFolderRename);
 homeRouter.post("/folder/delete/:folderId", homeController.postFolderDelete);
