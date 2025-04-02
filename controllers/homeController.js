@@ -89,6 +89,32 @@ exports.getFiles = asyncHandler(async (req, res) => {
   res.render("home/files", { files: files, folders: folders });
 });
 
+exports.getFile = asyncHandler(async (req, res) => {
+  const fileId = Number(req.params.fileId);
+  let file = await prisma.file.findMany({
+    where: {
+      id: fileId,
+    },
+    include: {
+      folder: {
+        select: {
+          folderName: true,
+        },
+      },
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
+  });
+  file[0] = formatDate(file[0]);
+  res.render("home/fileInformation", {
+    file: file[0],
+    returnPath: req.get("Referrer"),
+  });
+});
+
 exports.postFolder = [
   folderValidate,
   async (req, res) => {
