@@ -22,10 +22,34 @@ const folderRenameValidate = [
 ];
 
 exports.getHomePage = async (req, res) => {
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      File: true,
+    },
+  });
+  const files = await prisma.file.findMany({
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      folder: {
+        select: {
+          folderName: true,
+        },
+      },
+    },
+  });
   res.render("home/homePage", {
     user: req.user.username,
     folders: folders.length > 0 ? folders : "",
+    files: files.length > 0 ? files : "",
     home: true,
   });
 };

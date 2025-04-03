@@ -17,6 +17,26 @@
           <% if (locals.folders) { %>
             <p class="text-lg">Folders</p>
            <%- include('../partials/folders') %>
+           <% if (locals.files) { %>
+            <p>Files</p>
+            <div class="flex flex-row gap-4">
+              <% files.forEach(file => { %>
+              <a href="/home/files/<%= file.id %>">
+                <div class="inline-flex flex-col items-start rounded-lg w-[250px] bg-gray-300 p-2">
+                  <div class="flex justify-between w-full">
+                    <div class="flex gap-4 items-center">
+                      <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
+                      <p class="my-1 text-neutral-800 overflow-hidden"><%= file.fileName %></p>
+                    </div>
+                  </div>
+                  <div class="w-full h-[200px] flex justify-center items-center bg-gray-100 rounded-lg">
+                    <img src="/svg/file.svg" alt="File icon" class="w-[50px]">
+                  </div>
+                </div>
+               </a>
+               <% }) %>
+            </div>
+        <% } %>
           <% } %>
       <% } else if (locals.foldersOnly) {%>
         <div class="flex flex-col gap-4 w-full">
