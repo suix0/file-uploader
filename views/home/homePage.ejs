@@ -15,7 +15,7 @@
         <p class="text-2xl">Welcome to your file's home, <%= user %></p>
         <div class="flex flex-col mt-10 gap-4 w-full">
           <% if (locals.folders) { %>
-            <p class="text-lg">Folders</p>
+          <p class="text-lg">Folders</p>
            <%- include('../partials/folders') %>
            <% if (locals.files) { %>
             <p>Files</p>
@@ -40,8 +40,8 @@
           <% } %>
       <% } else if (locals.foldersOnly) {%>
         <div class="flex flex-col gap-4 w-full">
+          <p>All folders</p>
           <% if (locals.folders) { %>
-            <p>Folders</p>
             <div class="flex gap-4 whitespace-nowrap flex-wrap">
              <%- include('../partials/folders') %>
           <% } %>

@@ -24,6 +24,9 @@ const folderRenameValidate = [
 
 exports.getHomePage = async (req, res) => {
   const folders = await prisma.folder.findMany({
+    where: {
+      userId: req.user.id,
+    },
     include: {
       user: {
         select: {
@@ -34,6 +37,9 @@ exports.getHomePage = async (req, res) => {
     },
   });
   const files = await prisma.file.findMany({
+    where: {
+      userId: req.user.id,
+    },
     include: {
       user: {
         select: {
@@ -77,7 +83,11 @@ exports.getFolder = asyncHandler(async (req, res) => {
 
   folder[0] = formatDate(folder[0]);
 
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      userId: req.user.id,
+    },
+  });
 
   const files = folder[0].File.map((file) => file);
   res.render("home/folderInformation", {
@@ -88,7 +98,11 @@ exports.getFolder = asyncHandler(async (req, res) => {
 });
 
 exports.getFolders = asyncHandler(async (req, res) => {
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      userId: req.user.id,
+    },
+  });
   res.render("home/homePage", {
     folders: folders.length > 0 ? folders : "",
     foldersOnly: true,
@@ -97,6 +111,9 @@ exports.getFolders = asyncHandler(async (req, res) => {
 
 exports.getFiles = asyncHandler(async (req, res) => {
   let files = await prisma.file.findMany({
+    where: {
+      userId: req.user.id,
+    },
     include: {
       folder: {
         select: {
@@ -110,7 +127,11 @@ exports.getFiles = asyncHandler(async (req, res) => {
       },
     },
   });
-  const folders = await prisma.folder.findMany();
+  const folders = await prisma.folder.findMany({
+    where: {
+      userId: req.user.id,
+    },
+  });
   files = files.map((file) => formatDate(file));
   res.render("home/files", { files: files, folders: folders });
 });
@@ -120,6 +141,7 @@ exports.getFile = asyncHandler(async (req, res) => {
   let file = await prisma.file.findMany({
     where: {
       id: fileId,
+      userId: req.user.id,
     },
     include: {
       folder: {
@@ -180,6 +202,7 @@ exports.postFolderRename = [
       let folder = await prisma.folder.findMany({
         where: {
           id: folderId,
+          userId: req.user.id,
         },
         include: {
           user: {
@@ -193,7 +216,11 @@ exports.postFolderRename = [
 
       folder[0] = formatDate(folder[0]);
 
-      const folders = await prisma.folder.findMany();
+      const folders = await prisma.folder.findMany({
+        where: {
+          userId: req.user.id,
+        },
+      });
       res.render("home/folderInformation", {
         folder: folder,
         folders: folders,
@@ -215,7 +242,7 @@ exports.postFolderRename = [
       throw new Error("Folder does not exist!");
     }
 
-    res.redirect("/home");
+    res.redirect(req.get("referrer"));
   },
 ];
 
@@ -224,6 +251,7 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
   const deletedFolder = await prisma.folder.delete({
     where: {
       id: folderId,
+      userId: req.user.id,
     },
   });
 
@@ -231,7 +259,7 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
     throw new Error("Folder does not exist!");
   }
 
-  res.redirect("/home");
+  res.redirect("/home/folders");
 });
 
 exports.postFile = asyncHandler(async (req, res) => {
