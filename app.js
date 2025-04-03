@@ -38,4 +38,11 @@ require("./config/passport");
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
 
+app.use((err, req, res, next) => {
+  res.status(400).render("errors/errorPage", {
+    status: 400,
+    error: err.message,
+    returnPath: req.get("Referrer"),
+  });
+});
 app.listen(3000);

@@ -2,6 +2,7 @@ const { Router } = require("express");
 const homeController = require("../controllers/homeController");
 const isAuth = require("./authMiddleware");
 const multer = require("multer");
+const appendExtension = require("../utils/fileExtension");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -9,36 +10,9 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     if (req.body.fileName) {
-      let fileName = req.body.fileName;
-      const mimeType = file.mimetype;
-      switch (mimeType) {
-        case "application/pdf":
-          fileName = fileName + ".pdf";
-          break;
-        case "application/msword":
-          fileName = fileName + ".docs";
-          break;
-        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-          fileName = fileName + ".docx";
-          break;
-        case "application/vnd.oasis.opendocument.text":
-          fileName = fileName + ".odt";
-          break;
-        case "image/jpeg":
-          fileName = fileName + ".jpeg";
-          break;
-        case "image/png":
-          fileName = fileName + ".png";
-          break;
-        case "text/plain":
-          fileName = fileName + ".txt";
-          break;
-        default:
-          cb(new Error("File name not allowed."));
-      }
-      cb(null, fileName);
+      appendExtension(req.body.fileName, file.mimetype, cb);
     } else {
-      cb(null, file.originalname);
+      appendExtension(file.originalname, file.mimetype, cb);
     }
   },
 });
