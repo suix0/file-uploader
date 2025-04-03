@@ -3,6 +3,7 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 const formatDate = require("../utils/formatDates");
 const byteSize = require("byte-size");
+const path = require("node:path");
 
 const prisma = new PrismaClient();
 
@@ -109,9 +110,12 @@ exports.getFile = asyncHandler(async (req, res) => {
     },
   });
   file[0] = formatDate(file[0]);
+  file[0].path = path.join(__dirname, file[0].filePath);
+
   res.render("home/fileInformation", {
     file: file[0],
     returnPath: req.get("Referrer"),
+    filePath: file[0].path,
   });
 });
 

@@ -9,7 +9,34 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     if (req.body.fileName) {
-      cb(null, req.body.fileName);
+      let fileName = req.body.fileName;
+      const mimeType = file.mimetype;
+      switch (mimeType) {
+        case "application/pdf":
+          fileName = fileName + ".pdf";
+          break;
+        case "application/msword":
+          fileName = fileName + ".docs";
+          break;
+        case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          fileName = fileName + ".docx";
+          break;
+        case "application/vnd.oasis.opendocument.text":
+          fileName = fileName + ".odt";
+          break;
+        case "image/jpeg":
+          fileName = fileName + ".jpeg";
+          break;
+        case "image/png":
+          fileName = fileName + ".png";
+          break;
+        case "text/plain":
+          fileName = fileName + ".txt";
+          break;
+        default:
+          cb(new Error("File name not allowed."));
+      }
+      cb(null, fileName);
     } else {
       cb(null, file.originalname);
     }
