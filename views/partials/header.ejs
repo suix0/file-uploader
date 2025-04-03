@@ -1,6 +1,9 @@
 <header class="fixed w-full flex justify-between px-10 py-4 row-start-1 row-end-2">
   <p class="text-2xl">File House</p>
-  <% if (locals.isIndex) { %>
-    <button>Sign up</button>
-  <% } %>
+  <div>
+    <% if (locals.isIndex) { %>
+      <button>Sign up</button>
+    <% } %>
+      <a href="/home/logout">Log out</a>
+  </div>
 </header>

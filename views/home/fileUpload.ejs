@@ -1,0 +1,28 @@
+<dialog id="fileUpload" class="m-auto rounded-lg">
+  <a id="cancelUpload"></a>
+  <form action="/home/file/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4 p-4 relative">
+    <a class="absolute right-0 top-0 cursor-pointer" id="closeFileForm">
+      <img src="/svg/close.svg" alt="Close form" class="w-[24px]">
+    </a>
+    <div class="flex flex-col">
+      <label for="fileName">File name</label>
+      <input type="text" name="fileName" id="fileName" class="border p-1 rounded-lg">
+    </div>
+    <div class="flex flex-col">
+      <label for="folder">Folder</label> 
+      <select name="folder" id="folder" class="border p-1.5 rounded-lg">
+        <option value="none">None</option>
+        <% if (locals.folders) { %>
+          <% folders.forEach(folder => { %>
+            <option value="<%= folder.id %>"><%= folder.folderName %></option>
+          <% }) %>
+        <% } %>
+      </select>
+    </div>
+    <label for="file" class="flex flex-col">
+      <input type="file" name="file" class="w-full border rounded-lg" placeholder="No file chosen" />
+      <p class="text-xs">PDF, docs, docx, odt, jpeg, png</p>
+    </label>
+    <button class="border rounded-lg p-1" type="submit">Upload</button>
+  </form>   
+</dialog>

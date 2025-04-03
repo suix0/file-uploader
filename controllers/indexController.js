@@ -16,11 +16,13 @@ const validateRegistration = [
           username: value,
         },
       });
-      console.log(isExist);
-      console.log(value);
-      return isExist.username === value;
-    })
-    .withMessage(`Username is already taken.`),
+      if (isExist.length > 0) {
+        console.log(isExist);
+        if (isExist[0].username === value) {
+          throw new Error("Username is already taken.");
+        }
+      }
+    }),
   body("password")
     .trim()
     .notEmpty()

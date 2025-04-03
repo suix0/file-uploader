@@ -1,0 +1,16 @@
+ <%# Folder create form dialog %>
+ <dialog id="folderCreate" class="m-auto rounded-lg">
+  <a id="cancelUpload"/>
+  <form action="/home/folder/upload" method="post" class="flex flex-col gap-4 p-4 relative">
+    <a class="absolute right-0 top-0 cursor-pointer" id="closeFolderForm">
+      <img src="/svg/close.svg" alt="Close form" class="w-[24px]">
+    </a>
+    <label for="folderName">
+      <input type="text" name="folderName" id="folderName" placeholder="Folder name..." class="border p-1 rounded-lg" required>
+    </label>
+    <button class="border rounded-lg p-1" type="submit">Create</button>
+    <div class="flex justify-center">
+      <%- include('../errors/error') %>
+    </div>
+  </form>   
+</dialog>

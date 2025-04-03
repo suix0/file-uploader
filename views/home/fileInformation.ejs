@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File</title>
+  <link rel="stylesheet" href="/styles/output.css">
+</head>
+<body class="bg-gray-200 relative">
+  <%- include('../partials/header') %>
+  <div class="row-start-2 flex justify-center items-center flex-col mb-64 gap-4 p-4">
+    <p>File information</p>
+    <table class=" border">
+      <tr class="border-b">
+        <th class="border p-2 text-center">Owner</th>
+        <th class="border p-2 text-center">File Name</th>
+        <th class="border p-2 text-center">Date Uploaded</th>
+        <th class="border p-2 text-center">File Size</th>
+        <th class="border p-2 text-center">Actions</th>
+      </tr>
+    <tr>
+      <td class="border p-2 text-center"><%= file.user.username %></td>
+      <td class="border p-2 text-center"><%= file.fileName %></td>
+      <td class="border p-2 text-center"><%= file.dateCreated %></td>
+      <td class="border p-2 text-center"><%= file.size %></td>
+      <td>
+        <div class="flex justify-center gap-2">
+          <a id="folderRename" class="select-none cursor-pointer" href="<%= filePath %>" download="<%= file.fileName %>">
+            <img src="/svg/download.svg" alt="Download" class="w-[24px]">
+          </a>            
+        </div>
+      </td>
+    </tr>
+  </table>
+  <a href="<%= returnPath %>" class="mt-4">Return</a>
+  </div>
+</body>
+</html>

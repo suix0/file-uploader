@@ -10,7 +10,7 @@
   <%- include('../partials/header.ejs') %>
   <main class="flex row-start-2 px-10">
     <%- include('../partials/aside') %>
-    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col" >
+    <div class=" bg-gray-100 w-full h-[99%] p-6 rounded-lg flex flex-col gap-4" >
       <p>Folder information</p>
       <table class="mb-14 border">
         <tr class="border-b">
@@ -40,7 +40,25 @@
       </tr>
     </table>
     <p>Files</p>
-    
+    <div class="flex flex-wrap gap-4">
+      <% if (locals.files) { %>
+        <% files.forEach(file => { %>
+          <a href="/home/files/<%= file.id %>" class="overflow-hidden">
+            <div class="inline-flex flex-col border items-start rounded-lg w-[250px] p-2">
+              <div class="flex justify-between w-full">
+                <div class="flex gap-4 items-center">
+                  <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
+                  <p class="my-1 text-nowrap"><%= file.fileName %></p>
+                </div>
+              </div>
+              <div class="w-full h-[200px] flex justify-center items-center bg-gray-300 rounded-lg">
+                <img src="/svg/file.svg" alt="File icon" class="w-[50px]">
+              </div>
+            </div>
+          </a>
+      <% }) %>
+    <% } %>
+    </div>
   </div>
   </main>
 
@@ -71,30 +89,10 @@
   </dialog>
 
    <%# File upload form dialog %>
-   <dialog id="fileUpload" class="m-auto rounded-lg">
-    <a id="cancelUpload"></a>
-    <form action="/home/file/upload" method="post" enctype="multipart/form-data" class="flex flex-col gap-4 p-4">
-      <label for="fileName">
-        <input type="text" name="fileName" id="fileName" placeholder="Save file as..." class="border p-1 rounded-lg">
-      </label>
-      <input type="file" name="file" class="w-full border rounded-lg" placeholder="No file chosen" />
-      <button class="border rounded-lg p-1" type="submit">Upload</button>
-    </form>   
-  </dialog>
+  <%- include('fileUpload') %>
 
   <%# Folder create form dialog %>
-  <dialog id="folderCreate" class="m-auto rounded-lg">
-    <a id="cancelUpload"/>
-    <form action="/home/folder/upload" method="post" class="flex flex-col gap-4 p-4">
-      <label for="folderName">
-        <input type="text" name="folderName" id="folderName" placeholder="Folder name..." class="border p-1 rounded-lg" required>
-      </label>
-      <button class="border rounded-lg p-1" type="submit">Create</button>
-      <div class="flex justify-center">
-        <%- include('../errors/error') %>
-      </div>
-    </form>   
-  </dialog>
+  <%- include('folderUpload') %>
 
   <script>
     const updateDialog = document.querySelector("#updateDialog");
@@ -143,6 +141,16 @@
     if (openFolderForm) {
       folderDialog.showModal();
     }
+
+    const closeFileForm = document.querySelector("#closeFileForm");
+    closeFileForm.addEventListener("click", () => {
+      fileDialog.close();
+    })
+
+    const closeFolderForm = document.querySelector("#closeFolderForm");
+    closeFolderForm.addEventListener("click", () => {
+      folderDialog.close();
+    })
   </script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 const { format } = require("date-fns");
 
-const formatDate = (folder) => {
-  const dateCreated = folder[0].dateCreated;
-  const updatedAt = folder[0].updatedAt;
+const formatDate = (file) => {
+  const dateCreated = file.dateCreated;
+  const updatedAt = file.updatedAt;
 
-  folder[0].dateCreated = format(new Date(dateCreated), "M/d/yyyy, h:mm aaa");
-  folder[0].updatedAt = format(new Date(updatedAt), "M/d/yyyy, h:mm aaa");
+  file.dateCreated = format(new Date(dateCreated), "M/d/yyyy, h:mm aaa");
+  file.updatedAt = format(new Date(updatedAt), "M/d/yyyy, h:mm aaa");
 
-  return folder;
+  return file;
 };
 
 module.exports = formatDate;
