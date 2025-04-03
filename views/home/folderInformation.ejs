@@ -43,12 +43,12 @@
     <div class="flex flex-wrap gap-4">
       <% if (locals.files) { %>
         <% files.forEach(file => { %>
-          <a href="/home/files/<%= file.id %>">
+          <a href="/home/files/<%= file.id %>" class="overflow-hidden">
             <div class="inline-flex flex-col border items-start rounded-lg w-[250px] p-2">
               <div class="flex justify-between w-full">
                 <div class="flex gap-4 items-center">
                   <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
-                  <p class="my-1"><%= file.fileName %></p>
+                  <p class="my-1 text-nowrap"><%= file.fileName %></p>
                 </div>
               </div>
               <div class="w-full h-[200px] flex justify-center items-center bg-gray-300 rounded-lg">
@@ -141,6 +141,16 @@
     if (openFolderForm) {
       folderDialog.showModal();
     }
+
+    const closeFileForm = document.querySelector("#closeFileForm");
+    closeFileForm.addEventListener("click", () => {
+      fileDialog.close();
+    })
+
+    const closeFolderForm = document.querySelector("#closeFolderForm");
+    closeFolderForm.addEventListener("click", () => {
+      folderDialog.close();
+    })
   </script>
 </body>
 </html>

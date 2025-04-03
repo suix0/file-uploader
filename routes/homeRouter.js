@@ -20,10 +20,11 @@ const upload = multer({ storage: storage });
 const homeRouter = Router();
 
 homeRouter.get("/", isAuth, homeController.getHomePage);
-homeRouter.get("/folder/:folderId", homeController.getFolder);
-homeRouter.get("/folders", homeController.getFolders);
-homeRouter.get("/files", homeController.getFiles);
-homeRouter.get("/files/:fileId", homeController.getFile);
+homeRouter.get("/folder/:folderId", isAuth, homeController.getFolder);
+homeRouter.get("/folders", isAuth, homeController.getFolders);
+homeRouter.get("/files", isAuth, homeController.getFiles);
+homeRouter.get("/files/:fileId", isAuth, homeController.getFile);
+homeRouter.get("/logout", homeController.logOut);
 
 homeRouter.post("/file/upload", upload.single("file"), homeController.postFile);
 homeRouter.post("/folder/upload", homeController.postFolder);

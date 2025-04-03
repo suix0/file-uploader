@@ -21,7 +21,7 @@
             <p>Files</p>
             <div class="flex flex-row gap-4">
               <% files.forEach(file => { %>
-              <a href="/home/files/<%= file.id %>">
+              <a href="/home/files/<%= file.id %>" class="overflow-hidden">
                 <div class="inline-flex flex-col items-start rounded-lg w-[250px] bg-gray-300 p-2">
                   <div class="flex justify-between w-full">
                     <div class="flex gap-4 items-center">
@@ -70,6 +70,16 @@
     if (openFolderForm) {
       folderDialog.showModal();
     }
+
+    const closeFileForm = document.querySelector("#closeFileForm");
+    closeFileForm.addEventListener("click", () => {
+      fileDialog.close()
+    })
+
+    const closeFolderForm = document.querySelector("#closeFolderForm");
+    closeFolderForm.addEventListener("click", () => {
+      folderDialog.close();
+    })
   </script>
 </body>
 </html>

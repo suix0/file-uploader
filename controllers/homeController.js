@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const formatDate = require("../utils/formatDates");
 const byteSize = require("byte-size");
 const path = require("node:path");
+const custom404 = require("../errors/custom404");
 
 const prisma = new PrismaClient();
 
@@ -70,13 +71,13 @@ exports.getFolder = asyncHandler(async (req, res) => {
     },
   });
 
+  if (folder.length < 1) {
+    throw new Error("Folder not found");
+  }
+
   folder[0] = formatDate(folder[0]);
 
   const folders = await prisma.folder.findMany();
-
-  if (!folder) {
-    throw new Error("Folder not found");
-  }
 
   const files = folder[0].File.map((file) => file);
   res.render("home/folderInformation", {
@@ -133,12 +134,17 @@ exports.getFile = asyncHandler(async (req, res) => {
       },
     },
   });
+
+  if (file.length < 1) {
+    throw new custom404("File does not exist");
+  }
+
   file[0] = formatDate(file[0]);
   file[0].path = path.join(__dirname, file[0].filePath);
 
   res.render("home/fileInformation", {
     file: file[0],
-    returnPath: req.get("Referrer"),
+    returnPath: req.get("referrer"),
     filePath: file[0].path,
   });
 });
@@ -161,7 +167,7 @@ exports.postFolder = [
         userId: req.user.id,
       },
     });
-    res.redirect(req.get("Referrer"));
+    res.redirect(req.get("referrer"));
   },
 ];
 
@@ -205,7 +211,7 @@ exports.postFolderRename = [
       },
     });
 
-    if (!updatedFolder) {
+    if (updatedFolder.length < 1) {
       throw new Error("Folder does not exist!");
     }
 
@@ -242,5 +248,14 @@ exports.postFile = asyncHandler(async (req, res) => {
   if (!file) {
     throw new Error("There seems to be an error uploading file.");
   }
-  res.redirect(req.get("Referrer"));
+  res.redirect(req.get("referrer"));
+});
+
+exports.logOut = asyncHandler((req, res) => {
+  req.logOut((err) => {
+    if (err) {
+      throw new Error("You are not logged in.");
+    }
+  });
+  res.redirect("/");
 });
