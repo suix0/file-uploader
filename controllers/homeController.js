@@ -11,6 +11,10 @@ const fs = require("fs/promises");
 require("dotenv").config({ path: __dirname });
 
 const prisma = new PrismaClient();
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
 const folderValidate = [
   body("folderName")
@@ -171,7 +175,26 @@ exports.getFile = asyncHandler(async (req, res) => {
     file: file[0],
     returnPath: req.get("referrer"),
     filePath: file[0].filePath,
+    isDownload: false,
+    downloadPath: "",
+    mimeType: "",
   });
+});
+
+exports.getDownloadFile = asyncHandler(async (req, res) => {
+  const fileName = req.params.fileName;
+  // Get the file to download from supabase storage
+  const { data, error } = await supabase.storage
+    .from("user-files")
+    .download(fileName);
+  // Convert to a node-readable buffer and write it
+  try {
+    const buffer = Buffer.from(await data.arrayBuffer());
+    await fs.writeFile(`uploads/${fileName}`, buffer);
+    res.download(`uploads/${fileName}`);
+  } catch (err) {
+    throw new Error("Error downloading file.");
+  }
 });
 
 exports.postFolder = [
@@ -268,11 +291,6 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
 exports.postFile = asyncHandler(async (req, res) => {
   const fileSize = byteSize(req.file.size);
 
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_KEY
-  );
-
   try {
     // Read file
     const fileBuffer = await fs.readFile(req.file.path);
@@ -285,10 +303,10 @@ exports.postFile = asyncHandler(async (req, res) => {
         contentType: req.file.mimetype,
       });
     if (error) {
-      console.error(error);
+      throw new Error("Error uploading file.");
     }
   } catch (err) {
-    console.error(err);
+    throw new Error("Error uploading file.");
   }
 
   // Get the URL of the uploaded file

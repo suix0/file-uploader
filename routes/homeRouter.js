@@ -24,6 +24,11 @@ homeRouter.get("/folder/:folderId", isAuth, homeController.getFolder);
 homeRouter.get("/folders", isAuth, homeController.getFolders);
 homeRouter.get("/files", isAuth, homeController.getFiles);
 homeRouter.get("/files/:fileId", isAuth, homeController.getFile);
+homeRouter.get(
+  "/files/download/:fileName",
+  isAuth,
+  homeController.getDownloadFile
+);
 homeRouter.get("/logout", homeController.logOut);
 
 homeRouter.post("/file/upload", upload.single("file"), homeController.postFile);
