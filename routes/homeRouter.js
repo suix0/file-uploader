@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const homeController = require("../controllers/homeController");
 const isAuth = require("./authMiddleware");
+const homeRouter = Router();
 const multer = require("multer");
 const appendExtension = require("../utils/fileExtension");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "./uploads");
   },
   filename: (req, file, cb) => {
     if (req.body.fileName) {
@@ -17,7 +18,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-const homeRouter = Router();
 
 homeRouter.get("/", isAuth, homeController.getHomePage);
 homeRouter.get("/folder/:folderId", isAuth, homeController.getFolder);

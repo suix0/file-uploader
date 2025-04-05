@@ -17,7 +17,6 @@ const validateRegistration = [
         },
       });
       if (isExist.length > 0) {
-        console.log(isExist);
         if (isExist[0].username === value) {
           throw new Error("Username is already taken.");
         }

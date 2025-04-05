@@ -25,6 +25,9 @@
       <td class="border p-2 text-center"><%= file.size %></td>
       <td>
         <div class="flex justify-center gap-2">
+          <a href="<%= filePath %>">
+            <img src="/svg/eyes.svg" alt="View File" class="w-[24px]" rel="noreferrer" target="_blank">
+          </a>
           <a id="folderRename" class="select-none cursor-pointer" href="<%= filePath %>" download="<%= file.fileName %>">
             <img src="/svg/download.svg" alt="Download" class="w-[24px]">
           </a>            

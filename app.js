@@ -7,9 +7,11 @@ const path = require("node:path");
 const app = express();
 const indexRouter = require("./routes/indexRouter");
 const homeRouter = require("./routes/homeRouter");
+const cors = require("cors");
 
 require("dotenv").config();
 
+app.use(cors());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -45,4 +47,4 @@ app.use((err, req, res, next) => {
     error: err.message,
   });
 });
-app.listen(3000);
+app.listen(5000);

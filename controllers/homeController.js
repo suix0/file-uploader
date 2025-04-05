@@ -5,6 +5,10 @@ const formatDate = require("../utils/formatDates");
 const byteSize = require("byte-size");
 const path = require("node:path");
 const custom404 = require("../errors/custom404");
+const { createClient } = require("@supabase/supabase-js");
+const fs = require("fs/promises");
+
+require("dotenv").config({ path: __dirname });
 
 const prisma = new PrismaClient();
 
@@ -162,12 +166,11 @@ exports.getFile = asyncHandler(async (req, res) => {
   }
 
   file[0] = formatDate(file[0]);
-  file[0].path = path.join(__dirname, file[0].filePath);
 
   res.render("home/fileInformation", {
     file: file[0],
     returnPath: req.get("referrer"),
-    filePath: file[0].path,
+    filePath: file[0].filePath,
   });
 });
 
@@ -264,9 +267,39 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
 
 exports.postFile = asyncHandler(async (req, res) => {
   const fileSize = byteSize(req.file.size);
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_KEY
+  );
+
+  try {
+    // Read file
+    const fileBuffer = await fs.readFile(req.file.path);
+
+    // Upload file to supabase storage
+    const { data, error } = await supabase.storage
+      .from("user-files")
+      .upload(`${req.file.filename}`, fileBuffer, {
+        upsert: true,
+        contentType: req.file.mimetype,
+      });
+    if (error) {
+      console.error(error);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+
+  // Get the URL of the uploaded file
+  const fileUrl = supabase.storage
+    .from("user-files")
+    .getPublicUrl(`${req.file.filename}`);
+
+  // Store the file in the database
   let file = await prisma.file.create({
     data: {
-      filePath: req.file.path,
+      filePath: fileUrl.data.publicUrl,
       fileName: req.file.filename,
       folderId: Number(req.body.folder),
       size: `${fileSize.value}${fileSize.unit}`,
@@ -276,6 +309,14 @@ exports.postFile = asyncHandler(async (req, res) => {
   if (!file) {
     throw new Error("There seems to be an error uploading file.");
   }
+
+  // Delete the file
+  try {
+    await fs.unlink(`uploads/${req.file.filename}`);
+  } catch (err) {
+    console.error(err);
+  }
+
   res.redirect(req.get("referrer"));
 });
 
