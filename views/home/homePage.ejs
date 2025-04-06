@@ -26,12 +26,20 @@
                 <div class="inline-flex flex-col items-start rounded-lg w-[250px] bg-gray-300 p-2">
                   <div class="flex justify-between w-full">
                     <div class="flex gap-4 items-center">
-                      <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
+                      <% if (file.mimeType === "application/pdf" || file.mimeType === "application/msword" || file.mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimeType === "application/vnd.oasis.opendocument.text" || file.mimeType === "text/plain") { %>
+                        <img src="/svg/file.svg" alt="File icon" class="w-[24px]">
+                      <% } else { %>
+                        <img src="/svg/image.svg" alt="Image icon" class="w-[24px]">
+                      <% } %>
                       <p class="my-1 text-neutral-800 text-nowrap overflow-hidden"><%= file.fileName %></p>
                     </div>
                   </div>
                   <div class="w-full h-[200px] flex justify-center items-center bg-gray-100 rounded-lg">
-                    <img src="/svg/file.svg" alt="File icon" class="w-[50px]">
+                    <% if (file.mimeType === "application/pdf" || file.mimeType === "application/msword" || file.mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" || file.mimeType === "application/vnd.oasis.opendocument.text" || file.mimeType === "text/plain") { %>
+                      <img src="/svg/file.svg" alt="File icon" class="w-[50px]">
+                    <% } else { %>
+                      <img src="/svg/image.svg" alt="Image icon" class="w-[50px]">
+                    <% } %>
                   </div>
                 </div>
                </a>

@@ -61,6 +61,8 @@ exports.getHomePage = async (req, res) => {
       },
     },
   });
+
+  console.log(files);
   res.render("home/homePage", {
     user: req.user.username,
     folders: folders.length > 0 ? folders : "",
@@ -353,6 +355,7 @@ exports.postFile = asyncHandler(async (req, res) => {
       folderId: Number(req.body.folder),
       size: `${fileSize.value}${fileSize.unit}`,
       userId: req.user.id,
+      mimeType: req.file.mimetype,
     },
   });
   if (!file) {
