@@ -16,7 +16,8 @@
         <div class="flex flex-col mt-10 gap-4 w-full">
           <% if (locals.folders) { %>
           <p class="text-lg">Folders</p>
-           <%- include('../partials/folders') %>
+          <%- include('../partials/folders') %>
+          <% } %>
            <% if (locals.files) { %>
             <p>Files</p>
             <div class="flex flex-row flex-wrap gap-4">
@@ -37,7 +38,6 @@
                <% }) %>
             </div>
         <% } %>
-          <% } %>
       <% } else if (locals.foldersOnly) {%>
         <div class="flex flex-col gap-4 w-full">
           <p>All folders</p>

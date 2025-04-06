@@ -284,6 +284,14 @@ exports.postFolderRename = [
 
 exports.postFolderDelete = asyncHandler(async (req, res) => {
   const folderId = Number(req.params.folderId);
+
+  // Get files associated with the folder to delete
+  const files = await prisma.file.deleteMany({
+    where: {
+      folderId: folderId,
+    },
+  });
+
   const deletedFolder = await prisma.folder.delete({
     where: {
       id: folderId,
