@@ -183,15 +183,25 @@ exports.getFile = asyncHandler(async (req, res) => {
 
 exports.getDownloadFile = asyncHandler(async (req, res) => {
   const fileName = req.params.fileName;
+
   // Get the file to download from supabase storage
   const { data, error } = await supabase.storage
     .from("user-files")
     .download(fileName);
+
   // Convert to a node-readable buffer and write it
   try {
     const buffer = Buffer.from(await data.arrayBuffer());
     await fs.writeFile(`uploads/${fileName}`, buffer);
-    res.download(`uploads/${fileName}`);
+
+    // Download the file and delete it afterwards
+    res.download(`uploads/${fileName}`, (err) => {
+      if (err) {
+        throw new Error("Error downloading file.");
+      } else {
+        fs.unlink(`uploads/${fileName}`);
+      }
+    });
   } catch (err) {
     throw new Error("Error downloading file.");
   }
