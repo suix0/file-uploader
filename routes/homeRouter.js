@@ -17,7 +17,12 @@ const storage = multer.diskStorage({
     }
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+});
 
 homeRouter.get("/", isAuth, homeController.getHomePage);
 homeRouter.get("/folder/:folderId", isAuth, homeController.getFolder);
