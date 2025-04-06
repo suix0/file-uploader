@@ -286,7 +286,20 @@ exports.postFolderDelete = asyncHandler(async (req, res) => {
   const folderId = Number(req.params.folderId);
 
   // Get files associated with the folder to delete
-  const files = await prisma.file.deleteMany({
+  const files = await prisma.file.findMany({
+    where: {
+      folderId: folderId,
+    },
+  });
+
+  // Delete the files in the supabase storage
+  const fileNames = files.map((file) => file.fileName);
+  const { data, error } = await supabase.storage
+    .from("user-files")
+    .remove(fileNames);
+
+  // Delete the record of files in database
+  await prisma.file.deleteMany({
     where: {
       folderId: folderId,
     },
