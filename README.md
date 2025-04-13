@@ -1,1 +1,1 @@
-Too lazy right now to deploy it
+Too lazy to deploy
